@@ -1,4 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animationCache="false"
+    android:background="#3F51B5"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#00BCD4"
+        android:text="@string/string_dog_viewer_3_0"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="#FFFFFF"
+        android:textIsSelectable="false"
+        android:textStyle="bold|italic"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/dogView"
+        android:layout_width="match_parent"
+        android:layout_height="570dp"
+        android:background="#6D6D72"
+        android:contentDescription="@string/shows_images_retrieved_from_dog_api"
+        android:visibility="visible"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <Button
+        android:id="@+id/changeBreed"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/change_breed"
+        android:textColor="#000000"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/saveDog"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="205dp"
+            android:layout_height="wrap_content"
+            android:text="@string/download" />
+
+        <Button
+            android:id="@+id/nextDog"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="205dp"
+            android:layout_height="wrap_content"
+            android:text="@string/nextdog"
+            android:visibility="visible" />
+    </LinearLayout>
+
+</LinearLayout>

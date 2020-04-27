@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CS 125 Final Project -Anderson Chung</string>
+    <string name="string_dog_viewer_3_0">" Dog Viewer v1.0"</string>
+    <string name="change_breed">Change Breed</string>
+    <string name="nextdog">Next Image</string>
+    <string name="download">Download!!</string>
+    <string name="shows_images_retrieved_from_dog_api">Shows images retrieved from Dog API</string>
 </resources>
