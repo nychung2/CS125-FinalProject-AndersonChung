@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String currentBreed;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("nextDog", "Next picture requested");
-                updatePicture();
+                updatePicture(currentBreed);
             }
         });
 
@@ -44,8 +45,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    protected void updatePicture() {
+
+    protected void updatePicture(String currentBreed) {
         // handle the incoming image from DogApi
+        // if random use basic WebAPI
+        // else use breed in api
         ImageView picture = findViewById(R.id.dogView);
     }
 }
