@@ -8,24 +8,10 @@
     android:background="#3F51B5"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#00BCD4"
-        android:text="@string/string_dog_viewer_3_0"
-        android:textAlignment="textStart"
-        android:textAllCaps="false"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="#FFFFFF"
-        android:textIsSelectable="false"
-        android:textStyle="bold|italic"
-        android:visibility="visible" />
-
     <ImageView
         android:id="@+id/dogView"
         android:layout_width="match_parent"
-        android:layout_height="570dp"
+        android:layout_height="415dp"
         android:background="#6D6D72"
         android:contentDescription="@string/shows_images_retrieved_from_dog_api"
         android:visibility="visible"
@@ -48,14 +34,14 @@
         <Button
             android:id="@+id/saveDog"
             style="@style/Widget.AppCompat.Button"
-            android:layout_width="205dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:text="@string/download" />
 
         <Button
             android:id="@+id/nextDog"
             style="@style/Widget.AppCompat.Button"
-            android:layout_width="205dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:text="@string/nextdog"
             android:visibility="visible" />
