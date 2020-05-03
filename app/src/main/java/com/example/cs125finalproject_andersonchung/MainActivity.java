@@ -9,13 +9,38 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
 public class MainActivity extends AppCompatActivity {
 
+    private RequestQueue requestQueue;
     private String currentBreed;
+    public static final String TAG = "Tag";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        currentBreed = "random";
+        requestQueue = Volley.newRequestQueue(this);
 
         //handle the Breed Change Button/RadioGroup list
         Button changeBreed = findViewById(R.id.changeBreed);
@@ -23,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("changeBreed", "Change Breed Clicked");
+                // currentBreed = set the current breed to what the user requested
+                updatePicture();
             }
         });
 
@@ -32,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("nextDog", "Next picture requested");
-                updatePicture(currentBreed);
+                updatePicture();
             }
         });
 
@@ -46,10 +73,48 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    protected void updatePicture(String currentBreed) {
+    protected void updatePicture() {
         // handle the incoming image from DogApi
         // if random use basic WebAPI
         // else use breed in api
-        ImageView picture = findViewById(R.id.dogView);
+
+        Log.i("method", "method updatePicture has been called");
+        final ImageView picture = findViewById(R.id.dogView);
+        String url = "";
+
+        switch(currentBreed) {
+            case "random":
+                url = "https://dog.ceo/api/breeds/image/random";
+                break;
+            default:
+                url = "https://dog.ceo/api/breed/" + currentBreed + "/images/random";
+        }
+        // Request a string response from the provided URL.
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // parse the response;
+                        Log.i("request", "URL is valid");
+                        JsonElement element = JsonParser.parseString(response);
+                        JsonObject object = element.getAsJsonObject();
+                        Picasso.get().load(object.get("message").getAsString()).into(picture);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // ERROR: Not a valid breed
+                Log.i("request", "URL is invalid");
+            }
+        });
+        requestQueue.add(request);
+    }
+
+    @Override
+    protected void onStop () {
+        super.onStop();
+        if (requestQueue != null) {
+            requestQueue.cancelAll(TAG);
+        }
     }
 }
