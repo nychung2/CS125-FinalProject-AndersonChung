@@ -4,5 +4,6 @@
     <string name="change_breed">Change Breed</string>
     <string name="nextdog">Next Image</string>
     <string name="download">Download!!</string>
+    <string name="success">Download Successful</string>
     <string name="shows_images_retrieved_from_dog_api">Shows images retrieved from Dog API</string>
 </resources>

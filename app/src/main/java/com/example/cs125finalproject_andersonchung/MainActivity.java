@@ -1,10 +1,7 @@
 package com.example.cs125finalproject_andersonchung;
 
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,13 +22,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,8 +65,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("saveDog", "User Tried Downloading");
-                downloadImage();
-
+                String useHere = imageURL;
             }
         });
     }
@@ -134,29 +123,6 @@ public class MainActivity extends AppCompatActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    protected Bitmap downloadImage() {
-        try {
-            java.net.URL url = new java.net.URL(imageURL);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream image = connection.getInputStream();
-            Bitmap download = BitmapFactory.decodeStream(image);
-            image.close();
-            Toast.makeText(this, "Download Successful", Toast.LENGTH_SHORT).show();
-            return download;
-        } catch (IOException e) {
-            Toast.makeText(this, "Download Failed", Toast.LENGTH_SHORT).show();
-            return null;
-        } catch (OutOfMemoryError e) {
-            Toast.makeText(this, "Download Failed", Toast.LENGTH_SHORT).show();
-            return null;
-        } catch (NetworkOnMainThreadException e) {
-            Toast.makeText(this, "Download Failed.", Toast.LENGTH_SHORT).show();
-            return null;
-        }
     }
 
     @Override
