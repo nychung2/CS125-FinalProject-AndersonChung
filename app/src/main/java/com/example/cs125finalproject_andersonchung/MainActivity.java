@@ -1,12 +1,18 @@
 package com.example.cs125finalproject_andersonchung;
 
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -25,14 +31,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.HttpURLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
     private RequestQueue requestQueue;
     private String currentBreed;
+    private String imageURL;
     public static final String TAG = "Tag";
 
     @Override
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         currentBreed = "random";
         requestQueue = Volley.newRequestQueue(this);
+        updatePicture();
 
         //handle the Breed Change Button/RadioGroup list
         Button changeBreed = findViewById(R.id.changeBreed);
@@ -49,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i("changeBreed", "Change Breed Clicked");
                 // currentBreed = set the current breed to what the user requested
-                updatePicture();
+                showBreedList();
             }
         });
 
@@ -69,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("saveDog", "User Tried Downloading");
+                downloadImage();
+
             }
         });
     }
@@ -99,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                         JsonElement element = JsonParser.parseString(response);
                         JsonObject object = element.getAsJsonObject();
                         Picasso.get().load(object.get("message").getAsString()).into(picture);
+                        imageURL = object.get("message").getAsString();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -108,6 +117,46 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         requestQueue.add(request);
+    }
+
+    protected void showBreedList() {
+        //Gives a Alert Dialog of the Available Breeds
+
+        Log.i("method", "method showBreedList has been called");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose Your Breed").setItems(R.array.breeds_array, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String[] choices = getResources().getStringArray(R.array.breeds_array);
+                currentBreed = choices[which];
+                updatePicture();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    protected Bitmap downloadImage() {
+        try {
+            java.net.URL url = new java.net.URL(imageURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream image = connection.getInputStream();
+            Bitmap download = BitmapFactory.decodeStream(image);
+            image.close();
+            Toast.makeText(this, "Download Successful", Toast.LENGTH_SHORT).show();
+            return download;
+        } catch (IOException e) {
+            Toast.makeText(this, "Download Failed", Toast.LENGTH_SHORT).show();
+            return null;
+        } catch (OutOfMemoryError e) {
+            Toast.makeText(this, "Download Failed", Toast.LENGTH_SHORT).show();
+            return null;
+        } catch (NetworkOnMainThreadException e) {
+            Toast.makeText(this, "Download Failed.", Toast.LENGTH_SHORT).show();
+            return null;
+        }
     }
 
     @Override
